@@ -9,14 +9,14 @@ declare(strict_types = 1);
 
 namespace Ergonode\ExporterFile\Domain\Entity;
 
-use Ergonode\Exporter\Domain\Entity\Profile\AbstractExportProfile;
-use Ergonode\Exporter\Domain\Entity\Profile\ExportProfileInterface;
-use Ergonode\SharedKernel\Domain\Aggregate\ExportProfileId;
 use JMS\Serializer\Annotation as JMS;
+use Ergonode\Channel\Domain\Entity\AbstractChannel;
+use Ergonode\SharedKernel\Domain\Aggregate\ChannelId;
+use Ergonode\Channel\Domain\Event\ChannelCreatedEvent;
 
 /**
  */
-class FileExportProfile extends AbstractExportProfile implements ExportProfileInterface
+class FileExportChannel extends AbstractChannel
 {
     public const TYPE = 'file';
 
@@ -28,11 +28,13 @@ class FileExportProfile extends AbstractExportProfile implements ExportProfileIn
     protected string $format;
 
     /**
-     * @param ExportProfileId $id
-     * @param string          $name
-     * @param string          $format
+     * @param ChannelId $id
+     * @param string    $name
+     * @param string    $format
+     *
+     * @throws \Exception
      */
-    public function __construct(ExportProfileId $id, string $name, string $format)
+    public function __construct(ChannelId $id, string $name, string $format)
     {
         parent::__construct($id, $name);
 

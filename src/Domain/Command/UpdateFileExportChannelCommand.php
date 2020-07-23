@@ -10,18 +10,19 @@ declare(strict_types = 1);
 namespace Ergonode\ExporterFile\Domain\Command;
 
 use Ergonode\EventSourcing\Infrastructure\DomainCommandInterface;
-use Ergonode\SharedKernel\Domain\Aggregate\ExportProfileId;
+use Ergonode\SharedKernel\Domain\Aggregate\ChannelId;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  */
-class UpdateFileExportProfileCommand implements DomainCommandInterface
+class UpdateFileExportChannelCommand implements DomainCommandInterface
 {
     /**
-     * @var  ExportProfileId
+     * @var  ChannelId
      *
-     * @JMS\Type("Ergonode\SharedKernel\Domain\Aggregate\ExportProfileId")
+     * @JMS\Type("Ergonode\SharedKernel\Domain\Aggregate\ChannelId")
      */
-    protected ExportProfileId $id;
+    protected ChannelId $id;
 
     /**
      * @var string
@@ -38,11 +39,11 @@ class UpdateFileExportProfileCommand implements DomainCommandInterface
     protected string $format;
 
     /**
-     * @param ExportProfileId $id
-     * @param string          $name
-     * @param string          $format
+     * @param ChannelId $id
+     * @param string    $name
+     * @param string    $format
      */
-    public function __construct(ExportProfileId $id, string $name, string $format)
+    public function __construct(ChannelId $id, string $name, string $format)
     {
         $this->id = $id;
         $this->name = $name;
@@ -50,9 +51,9 @@ class UpdateFileExportProfileCommand implements DomainCommandInterface
     }
 
     /**
-     * @return ExportProfileId
+     * @return ChannelId
      */
-    public function getId(): ExportProfileId
+    public function getId(): ChannelId
     {
         return $this->id;
     }

@@ -9,16 +9,16 @@ declare(strict_types = 1);
 namespace Ergonode\ExporterFile\Infrastructure\Builder\Command;
 
 use Ergonode\EventSourcing\Infrastructure\DomainCommandInterface;
-use Ergonode\Exporter\Application\Provider\CreateExportProfileCommandBuilderInterface;
-use Ergonode\SharedKernel\Domain\Aggregate\ExportProfileId;
 use Symfony\Component\Form\FormInterface;
-use Ergonode\ExporterFile\Domain\Command\CreateFileExportProfileCommand;
-use Ergonode\ExporterFile\Domain\Entity\FileExportProfile;
+use Ergonode\ExporterFile\Domain\Command\CreateFileExportChannelCommand;
 use Ergonode\ExporterFile\Application\Model\ExporterFileConfigurationModel;
+use Ergonode\Channel\Application\Provider\CreateChannelCommandBuilderInterface;
+use Ergonode\ExporterFile\Domain\Entity\FileExportChannel;
+use Ergonode\SharedKernel\Domain\Aggregate\ChannelId;
 
 /**
  */
-class CreateFileExportProfileCommandBuilder implements CreateExportProfileCommandBuilderInterface
+class CreateFileExportChannelCommandBuilder implements CreateChannelCommandBuilderInterface
 {
     /**
      * @param string $type
@@ -27,7 +27,7 @@ class CreateFileExportProfileCommandBuilder implements CreateExportProfileComman
      */
     public function supported(string $type): bool
     {
-        return FileExportProfile::TYPE === $type;
+        return FileExportChannel::TYPE === $type;
     }
 
     /**
@@ -45,8 +45,8 @@ class CreateFileExportProfileCommandBuilder implements CreateExportProfileComman
         $name = $data->name;
         $format = $data->format;
 
-        return new CreateFileExportProfileCommand(
-            ExportProfileId::generate(),
+        return new CreateFileExportChannelCommand(
+            ChannelId::generate(),
             $name,
             $format,
         );

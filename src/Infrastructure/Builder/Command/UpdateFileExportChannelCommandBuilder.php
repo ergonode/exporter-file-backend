@@ -9,16 +9,16 @@ declare(strict_types = 1);
 namespace Ergonode\ExporterFile\Infrastructure\Builder\Command;
 
 use Ergonode\EventSourcing\Infrastructure\DomainCommandInterface;
-use Ergonode\Exporter\Application\Provider\UpdateExportProfileCommandBuilderInterface;
-use Ergonode\SharedKernel\Domain\Aggregate\ExportProfileId;
 use Symfony\Component\Form\FormInterface;
-use Ergonode\ExporterFile\Domain\Command\UpdateFileExportProfileCommand;
-use Ergonode\ExporterFile\Domain\Entity\FileExportProfile;
+use Ergonode\ExporterFile\Domain\Command\UpdateFileExportChannelCommand;
 use Ergonode\ExporterFile\Application\Model\ExporterFileConfigurationModel;
+use Ergonode\Channel\Application\Provider\UpdateChannelCommandBuilderInterface;
+use Ergonode\ExporterFile\Domain\Entity\FileExportChannel;
+use Ergonode\SharedKernel\Domain\Aggregate\ChannelId;
 
 /**
  */
-class UpdateFileExportProfileCommandBuilder implements UpdateExportProfileCommandBuilderInterface
+class UpdateFileExportChannelCommandBuilder implements UpdateChannelCommandBuilderInterface
 {
     /**
      * @param string $type
@@ -27,16 +27,16 @@ class UpdateFileExportProfileCommandBuilder implements UpdateExportProfileComman
      */
     public function supported(string $type): bool
     {
-        return FileExportProfile::TYPE === $type;
+        return FileExportChannel::TYPE === $type;
     }
 
     /**
-     * @param ExportProfileId $exportProfileId
-     * @param FormInterface   $form
+     * @param ChannelId     $channelId
+     * @param FormInterface $form
      *
      * @return DomainCommandInterface
      */
-    public function build(ExportProfileId $exportProfileId, FormInterface $form): DomainCommandInterface
+    public function build(ChannelId $channelId, FormInterface $form): DomainCommandInterface
     {
         /** @var ExporterFileConfigurationModel $data */
         $data = $form->getData();
@@ -44,8 +44,8 @@ class UpdateFileExportProfileCommandBuilder implements UpdateExportProfileComman
         $name = $data->name;
         $format = $data->format;
 
-        return new UpdateFileExportProfileCommand(
-            $exportProfileId,
+        return new UpdateFileExportChannelCommand(
+            $channelId,
             $name,
             $format,
         );

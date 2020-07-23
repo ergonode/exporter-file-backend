@@ -8,19 +8,19 @@ declare(strict_types = 1);
 
 namespace Ergonode\ExporterFile\Application\Factory;
 
-use Ergonode\Exporter\Application\Provider\ExportProfileFormFactoryInterface;
-use Ergonode\Exporter\Domain\Entity\Profile\AbstractExportProfile;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Ergonode\ExporterFile\Application\Model\ExporterFileConfigurationModel;
 use Webmozart\Assert\Assert;
-use Ergonode\ExporterFile\Domain\Entity\FileExportProfile;
 use Ergonode\ExporterFile\Application\Form\ExporterFileConfigurationForm;
+use Ergonode\Channel\Application\Provider\ChannelFormFactoryInterface;
+use Ergonode\ExporterFile\Domain\Entity\FileExportChannel;
+use Ergonode\Channel\Domain\Entity\AbstractChannel;
 
 /**
  */
-class ExportFileProfileFormFactory implements ExportProfileFormFactoryInterface
+class ExportFileChannelFormFactory implements ChannelFormFactoryInterface
 {
     /**
      * @var FormFactoryInterface
@@ -42,19 +42,19 @@ class ExportFileProfileFormFactory implements ExportProfileFormFactoryInterface
      */
     public function supported(string $type): bool
     {
-        return FileExportProfile::TYPE === $type;
+        return FileExportChannel::TYPE === $type;
     }
 
     /**
-     * @param AbstractExportProfile|FileExportProfile|null $exportProfile
+     * @param AbstractChannel|FileExportChannel|null $channel
      *
      * @return FormInterface
      */
-    public function create(AbstractExportProfile $exportProfile = null): FormInterface
+    public function create(AbstractChannel $channel = null): FormInterface
     {
-        Assert::nullOrIsInstanceOf($exportProfile, FileExportProfile::class);
-        $model = new ExporterFileConfigurationModel($exportProfile);
-        $method = $exportProfile ? Request::METHOD_PUT : Request::METHOD_POST;
+        Assert::nullOrIsInstanceOf($channel, FileExportChannel::class);
+        $model = new ExporterFileConfigurationModel($channel);
+        $method = $channel ? Request::METHOD_PUT : Request::METHOD_POST;
 
         return $this->formFactory->create(ExporterFileConfigurationForm::class, $model, ['method' => $method]);
     }
